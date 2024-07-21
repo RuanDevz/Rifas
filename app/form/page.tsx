@@ -1,27 +1,26 @@
-'use client'
+"use client";
 import React, { useState, useEffect, useContext } from "react";
 import rifasImage from "../../public/rifas.jpg";
 import Image from "next/image";
 import { RifasContext } from "@/context/RifasContext";
-import axios from 'axios';
-import { ruffleTypes } from "@/types/Rufletypes";
+import axios from "axios";
 import { Ticket } from "@/types/TicketGenerates";
+import Link from "next/link";
 
 export default function FormPage() {
   const [timeLeft, setTimeLeft] = useState(120 * 24 * 3600);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const { rifasAvailable, setRifasAvailable } = useContext(RifasContext);
-
-  const [ticketGerenate, setTicketGerenate] = useState<Ticket[]>([])
-
-
-
+  const [ticketGerenate, setTicketGerenate] = useState<Ticket[]>([]);
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/tickets-restantes`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API}/tickets-restantes`
+        );
         setRifasAvailable(response.data.ticketsDisponiveis);
         console.log(response.data.ticketsDisponiveis);
       } catch (error) {
@@ -53,34 +52,40 @@ export default function FormPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (rifasAvailable > 0) {
-
-      try{
-        await axios.post(`${process.env.NEXT_PUBLIC_API}/generate-ticket`, {name, email})
-        .then((response) =>{
-          console.log(response.data.ticket)
-          setTicketGerenate(response.data.ticket)
-
-          localStorage.setItem('UserTicket', JSON.stringify(response.data.ticket));
-        })
-      } catch(error){
-        console.log(error)
+    if (rifasAvailable >= quantity) {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/generate-ticket`,
+          { name, email, quantity }
+        );
+        setTicketGerenate(response.data.ticket);
+        localStorage.setItem(
+          "UserTicket",
+          JSON.stringify(response.data.ticket)
+        );
+      } catch (error) {
+        console.error("Error generating ticket", error);
       }
 
-      const products = [{
-        name: "VIP Method Ticket",
-        price: 1,
-        quantity: 1,
-      }];
+      const products = [
+        {
+          name: "VIP Method Ticket",
+          price: 1,
+          quantity,
+        },
+      ];
 
       try {
-        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API}/create-checkout`, { products });
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/create-checkout`,
+          { products }
+        );
         window.location.href = data.url;
       } catch (error) {
         console.error("Error creating checkout session", error);
       }
     } else {
-      alert("All tickets have been sold!");
+      alert("Não há tickets suficientes disponíveis!");
     }
   };
 
@@ -98,17 +103,17 @@ export default function FormPage() {
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           VIP METHOD TICKET
         </h1>
-        <p className="text-xl text-gray-600 mb-6">Price: $1</p>
+        <p className="text-xl text-gray-600 mb-6">Preço: R$1</p>
         <h2 className="text-2xl text-gray-700 mb-2 pb-3">
-          {rifasAvailable} tickets remaining
+          {rifasAvailable} tickets restantes
         </h2>
         <p className="text-xl text-gray-600 mb-6">
-          Time left: {formatTime(timeLeft)}
+          Tempo restante: {formatTime(timeLeft)}
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
             type="text"
-            placeholder="Your Name"
+            placeholder="Seu Nome"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="px-4 py-2 border rounded-md text-gray-800"
@@ -116,9 +121,19 @@ export default function FormPage() {
           />
           <input
             type="email"
-            placeholder="Your Email"
+            placeholder="Seu Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="px-4 py-2 border rounded-md text-gray-800"
+            required
+          />
+          <input
+            type="number"
+            min="1"
+            max={rifasAvailable}
+            placeholder="Quantidade de Tickets"
+            value={quantity}
+            onChange={(e) => setQuantity(parseInt(e.target.value))}
             className="px-4 py-2 border rounded-md text-gray-800"
             required
           />
@@ -126,8 +141,9 @@ export default function FormPage() {
             type="submit"
             className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition-colors duration-300"
           >
-            Buy Raffle
+            Comprar Rifa
           </button>
+          <Link href="/consultticket"><p className="text-blue-500 underline">Consultar Ticket</p></Link>
         </form>
       </div>
     </div>

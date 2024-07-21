@@ -16,7 +16,9 @@ export default function ConfirmationPayment() {
         const ticketData = JSON.parse(ticketString);
 
         try {
-          await axios.post(`${process.env.NEXT_PUBLIC_API}/reduce-ticket`, {}, {
+          await axios.post(`${process.env.NEXT_PUBLIC_API}/reduce-ticket`, {
+            quantity: ticketData.quantity // Envia a quantidade do ticket
+          }, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -79,14 +81,12 @@ export default function ConfirmationPayment() {
           Pagamento Confirmado
         </h1>
         <p className="text-gray-600 mb-4">
-          O seu pagamento foi confirmado com sucesso.
-        </p>
-        <p className="text-gray-600 mb-4">
-          Obrigado por utilizar nosso serviço!
+          O seu pagamento foi confirmado com sucesso. Obrigado por utilizar nosso serviço!
         </p>
         {ticket && (
           <div className="text-center text-gray-600 mb-4">
             <p>Seu Ticket é: #{ticket.ticket}</p>
+            <p>Quantidade comprada: {ticket.quantity}</p>
           </div>
         )}
         <div className="flex justify-center items-center">

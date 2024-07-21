@@ -3,4 +3,5 @@ export interface Ticket {
     name: string,
     email: string,
     ticket: number
+    quantity: number
 }
