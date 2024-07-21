@@ -17,7 +17,7 @@ export default function ConfirmationPayment() {
 
         try {
           await axios.post(`${process.env.NEXT_PUBLIC_API}/reduce-ticket`, {
-            quantity: ticketData.quantity // Envia a quantidade do ticket
+            quantity: ticketData.quantity
           }, {
             headers: {
               'Content-Type': 'application/json',
