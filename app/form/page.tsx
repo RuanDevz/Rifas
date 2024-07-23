@@ -22,7 +22,7 @@ export default function FormPage() {
           `${process.env.NEXT_PUBLIC_API}/tickets-restantes`
         );
         setRifasAvailable(response.data.ticketsDisponiveis);
-        console.log(response.data.ticketsDisponiveis);
+        console.log("Tickets disponíveis:", response.data.ticketsDisponiveis);
       } catch (error) {
         console.error("Error fetching tickets", error);
       }
@@ -55,34 +55,49 @@ export default function FormPage() {
     if (rifasAvailable >= quantity) {
       try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/generate-ticket`,
+          `http://localhost:5000/generate-tickets`,
           { name, email, quantity }
         );
-        setTicketGerenate(response.data.ticket);
-        localStorage.setItem(
-          "UserTicket",
-          JSON.stringify(response.data.ticket)
-        );
+        
+        const responsedata = response.data;
+        console.log("Resposta da API:", responsedata);
+
+        // Verifica se responsedata contém a propriedade tickets e se é um array
+        if (responsedata && Array.isArray(responsedata.tickets)) {
+          // Extraia os números dos tickets
+          const ticketNumbers = responsedata.tickets.map((ticket: { ticket: number }) => ticket.ticket);
+          
+          // Salve os números dos tickets no localStorage
+          localStorage.setItem("UserTicket", JSON.stringify(ticketNumbers));
+          console.log("Tickets salvos no localStorage:", ticketNumbers);
+
+          // Atualize o estado com os tickets gerados
+          setTicketGerenate(responsedata.tickets);
+        } else {
+          console.error("A resposta da API não contém um array de tickets ou tickets está faltando.");
+        }
+        
+        // Continue com o checkout
+        const products = [
+          {
+            name: "VIP Method Ticket",
+            price: 1,
+            quantity,
+          },
+        ];
+
+        try {
+          const { data } = await axios.post(
+            `${process.env.NEXT_PUBLIC_API}/create-checkout`,
+            { products }
+          );
+          window.location.href = data.url
+          
+        } catch (error) {
+          console.error("Error creating checkout session", error);
+        }
       } catch (error) {
         console.error("Error generating ticket", error);
-      }
-
-      const products = [
-        {
-          name: "VIP Method Ticket",
-          price: 1,
-          quantity,
-        },
-      ];
-
-      try {
-        const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/create-checkout`,
-          { products }
-        );
-        window.location.href = data.url;
-      } catch (error) {
-        console.error("Error creating checkout session", error);
       }
     } else {
       alert("Não há tickets suficientes disponíveis!");
@@ -143,7 +158,9 @@ export default function FormPage() {
           >
             Comprar Rifa
           </button>
-          <Link href="/consultticket"><p className="text-blue-500 underline">Consultar Ticket</p></Link>
+          <Link href="/consultticket">
+            <p className="text-blue-500 underline">Consultar Ticket</p>
+          </Link>
         </form>
       </div>
     </div>

@@ -73,7 +73,6 @@ export default function SearchTicket() {
                 ticketInfo.map((ticket, index) => (
                   <div key={index} className="mb-4">
                     <p><strong>Número do Ticket:</strong> #{ticket.ticket}</p>
-                    <p><strong>Quantidade:</strong> {ticket.quantity}</p>
                   </div>
                 ))
               ) : (

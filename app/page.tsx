@@ -1,81 +1,66 @@
-"use client";
-
-import { useState, useEffect, useContext } from "react";
-import Image from "next/image";
-import rifasImage from "../public/rifas.jpg";
 import Link from "next/link";
-import { RifasContext } from "@/context/RifasContext";
-import axios from 'axios'
+import React from "react";
+import { FaDiscord, FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
 
 export default function Home() {
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [rifasAvailable, setRifasAvailable] = useState<number>(0)
-
-  useEffect(() =>{
-    axios.get(`${process.env.NEXT_PUBLIC_API}/tickets-restantes`)
-    .then((response) =>{
-      setRifasAvailable(response.data.ticketsDisponiveis)
-      console.log(rifasAvailable)
-    })
-  },[])
-
-
-
-  useEffect(() => {
-
-    const savedTimeLeft = parseInt(localStorage.getItem('timeLeft') || '0', 10);
-    const initialTimeLeft = savedTimeLeft > 0 ? savedTimeLeft : 120 * 24 * 3600;
-    setTimeLeft(initialTimeLeft);
-
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        const newTime = prevTime > 0 ? prevTime - 1 : 0;
-        localStorage.setItem('timeLeft', newTime.toString());
-        return newTime;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const days = Math.floor(seconds / (3600 * 24));
-    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${days}d ${hours.toString().padStart(2, "0")}h ${minutes
-      .toString()
-      .padStart(2, "0")}m ${secs.toString().padStart(2, "0")}s`;
-  };
-
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <Image
-        src={rifasImage}
-        alt="Rifas Background"
-        layout="fill"
-        objectFit="cover"
-        className="absolute z-0"
-      />
-      <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
-      <h1 className="text-3xl text-white font-bold pb-10 relative z-10">
-        Buy your ticket now!
-      </h1>
-      <div className="bg-white bg-opacity-70 p-10 rounded-lg shadow-lg text-center relative z-10">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          Available Tickets
+    <div className="p-6 font-sans bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+        <h1 className="text-3xl font-bold mb-4 text-center">
+          VIP METHOD TICKET
         </h1>
-        <h2 className="text-2xl text-gray-700 mb-2">
-          {rifasAvailable} tickets remaining
-        </h2>
-        <h3 className="text-xl text-gray-600 mb-6">
-          Time left: {formatTime(timeLeft)}
-        </h3>
-        <Link href='/form'>
-          <button className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition-colors duration-300">
-            Buy Ticket
-          </button>
-        </Link>
+        <p className="mb-4 text-center">We are happy to have you here.</p>
+        <h2 className="text-2xl font-semibold mb-2">Latest Update</h2>
+        <p className="mb-4">
+          The latest project update was on July 22, 2024. In this update, we
+          added Stripe integration for checkout and improved the email
+          notification system.
+        </p>
+        <h2 className="text-2xl font-semibold mb-2">Join Our Community</h2>
+        <p className="mb-4 text-center">
+          Join our social networks for discussions, updates, and support.
+        </p>
+        <div className="flex justify-center space-x-4 mb-4">
+          <a
+            href="https://discord.com/invite/your-invite-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-700"
+          >
+            <FaDiscord size={32} />
+          </a>
+          <a
+            href="https://twitter.com/your-profile"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-blue-600"
+          >
+            <FaTwitter size={32} />
+          </a>
+          <a
+            href="https://instagram.com/your-profile"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-pink-500 hover:text-pink-700"
+          >
+            <FaInstagram size={32} />
+          </a>
+          <a
+            href="https://facebook.com/your-profile"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 hover:text-blue-900"
+          >
+            <FaFacebook size={32} />
+          </a>
+        </div>
+        <div className="flex justify-center">
+          <Link href="/dashboard">
+            <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+              Buy VIP Ticket here
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
