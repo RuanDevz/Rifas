@@ -10,12 +10,14 @@ export default function Home() {
           VIP METHOD TICKET
         </h1>
         <p className="mb-4 text-center">We are happy to have you here.</p>
-        <h2 className="text-2xl font-semibold mb-2">Latest Update</h2>
-        <p className="mb-4">
-          The latest project update was on July 22, 2024. In this update, we
-          added Stripe integration for checkout and improved the email
-          notification system.
-        </p>
+        <Link
+          target="_blank"
+          className="text-blue-500 underline"
+          href="https://rentry.co/sevenx"
+        >
+          <h2 className="text-2xl font-semibold mb-2">VIP UPDATED LEAKS</h2>
+        </Link>
+        <p className="mb-4"></p>
         <h2 className="text-2xl font-semibold mb-2">Join Our Community</h2>
         <p className="mb-4 text-center">
           Join our social networks for discussions, updates, and support.
@@ -28,30 +30,6 @@ export default function Home() {
             className="text-blue-500 hover:text-blue-700"
           >
             <FaDiscord size={32} />
-          </a>
-          <a
-            href="https://twitter.com/your-profile"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-600"
-          >
-            <FaTwitter size={32} />
-          </a>
-          <a
-            href="https://instagram.com/your-profile"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-pink-500 hover:text-pink-700"
-          >
-            <FaInstagram size={32} />
-          </a>
-          <a
-            href="https://facebook.com/your-profile"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-700 hover:text-blue-900"
-          >
-            <FaFacebook size={32} />
           </a>
         </div>
         <div className="flex justify-center">

@@ -11,7 +11,7 @@ export default function FormPage() {
   const [timeLeft, setTimeLeft] = useState(120 * 24 * 3600);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(5);
   const { rifasAvailable, setRifasAvailable } = useContext(RifasContext);
   const [ticketGerenate, setTicketGerenate] = useState<Ticket[]>([]);
 
@@ -55,29 +55,28 @@ export default function FormPage() {
     if (rifasAvailable >= quantity) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/generate-tickets`,
+          `${process.env.NEXT_PUBLIC_API}/generate-tickets`,
           { name, email, quantity }
         );
-        
+
         const responsedata = response.data;
         console.log("Resposta da API:", responsedata);
 
-        // Verifica se responsedata contém a propriedade tickets e se é um array
         if (responsedata && Array.isArray(responsedata.tickets)) {
-          // Extraia os números dos tickets
-          const ticketNumbers = responsedata.tickets.map((ticket: { ticket: number }) => ticket.ticket);
-          
-          // Salve os números dos tickets no localStorage
+          const ticketNumbers = responsedata.tickets.map(
+            (ticket: { ticket: number }) => ticket.ticket
+          );
+
           localStorage.setItem("UserTicket", JSON.stringify(ticketNumbers));
           console.log("Tickets salvos no localStorage:", ticketNumbers);
 
-          // Atualize o estado com os tickets gerados
           setTicketGerenate(responsedata.tickets);
         } else {
-          console.error("A resposta da API não contém um array de tickets ou tickets está faltando.");
+          console.error(
+            "A resposta da API não contém um array de tickets ou tickets está faltando."
+          );
         }
-        
-        // Continue com o checkout
+
         const products = [
           {
             name: "VIP Method Ticket",
@@ -91,8 +90,7 @@ export default function FormPage() {
             `${process.env.NEXT_PUBLIC_API}/create-checkout`,
             { products }
           );
-          window.location.href = data.url
-          
+          window.location.href = data.url;
         } catch (error) {
           console.error("Error creating checkout session", error);
         }
@@ -148,9 +146,15 @@ export default function FormPage() {
             max={rifasAvailable}
             placeholder="Quantidade de Tickets"
             value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value))}
+            onChange={(e) => {
+              // Limita a quantidade de caracteres a 4
+              const newValue = e.target.value.slice(0, 4);
+              setQuantity(parseInt(newValue));
+            }}
             className="px-4 py-2 border rounded-md text-gray-800"
             required
+            maxLength={4} // Define o máximo de caracteres
+            pattern="[0-9]*" // Aceita apenas números
           />
           <button
             type="submit"
