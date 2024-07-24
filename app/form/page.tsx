@@ -116,17 +116,17 @@ export default function FormPage() {
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           VIP METHOD TICKET
         </h1>
-        <p className="text-xl text-gray-600 mb-6">Preço: R$1</p>
+        <p className="text-xl text-gray-600 mb-6">Price: $1</p>
         <h2 className="text-2xl text-gray-700 mb-2 pb-3">
-          {rifasAvailable} tickets restantes
+          {rifasAvailable} tickets remaining
         </h2>
         <p className="text-xl text-gray-600 mb-6">
-          Tempo restante: {formatTime(timeLeft)}
+          Time left: {formatTime(timeLeft)}
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
             type="text"
-            placeholder="Seu Nome"
+            placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="px-4 py-2 border rounded-md text-gray-800"
@@ -134,7 +134,7 @@ export default function FormPage() {
           />
           <input
             type="email"
-            placeholder="Seu Email"
+            placeholder="Your e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="px-4 py-2 border rounded-md text-gray-800"
@@ -142,20 +142,14 @@ export default function FormPage() {
           />
           <input
             type="number"
-            min="1"
-            max={rifasAvailable}
-            placeholder="Quantidade de Tickets"
+            min="5"
+            max={rifasAvailable} 
+            placeholder="Tickets quantity"
             value={quantity}
-            onChange={(e) => {
-              // Limita a quantidade de caracteres a 4
-              const newValue = e.target.value.slice(0, 4);
-              setQuantity(parseInt(newValue));
-            }}
             className="px-4 py-2 border rounded-md text-gray-800"
             required
-            maxLength={4} // Define o máximo de caracteres
-            pattern="[0-9]*" // Aceita apenas números
           />
+
           <button
             type="submit"
             className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition-colors duration-300"

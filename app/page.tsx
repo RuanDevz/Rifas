@@ -24,7 +24,7 @@ export default function Home() {
         </p>
         <div className="flex justify-center space-x-4 mb-4">
           <a
-            href="https://discord.com/invite/your-invite-link"
+            href="https://discord.gg/95BKaYTPPS"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:text-blue-700"
