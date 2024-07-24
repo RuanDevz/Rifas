@@ -142,10 +142,14 @@ export default function FormPage() {
           />
           <input
             type="number"
-            min="5"
+            min={5}
             max={rifasAvailable} 
             placeholder="Tickets quantity"
             value={quantity}
+            onChange={(e) => {
+              const newValue = e.target.value.slice(0, 4); 
+              setQuantity(parseInt(newValue));
+            }}
             className="px-4 py-2 border rounded-md text-gray-800"
             required
           />
