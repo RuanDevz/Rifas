@@ -50,7 +50,7 @@ export default function ConfirmationPayment() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#333]">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">Generating your tickets, please wait...</h1>
         </div>
@@ -60,7 +60,7 @@ export default function ConfirmationPayment() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#333]">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
           <h1 className="text-3xl font-bold text-red-600 mb-6">Error</h1>
           <p className="text-gray-600 mb-4">{error}</p>
@@ -77,7 +77,7 @@ export default function ConfirmationPayment() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#333]">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Payment Confirmed</h1>
         <p className="text-gray-600 mb-4">
