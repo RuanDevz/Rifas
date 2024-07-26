@@ -34,11 +34,11 @@ export default function SearchTicket() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#333] p-4">
+      <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center">Ticket System</h1>
         <div className="mb-4">
-          <label className="font-bold" htmlFor="Ticket">Consultar Ticket Único</label>
+          <label className="font-bold" htmlFor="Ticket">Check Single Ticket</label>
           <input
             type="text"
             id="Ticket"
@@ -61,9 +61,9 @@ export default function SearchTicket() {
         </div>
         <button
           onClick={handleSearch}
-          className="w-full px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600"
+          className="w-full px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-[#333]"
         >
-          Buscar Ticket
+          Search Ticket
         </button>
         {ticketInfo && (
           <div className="mt-4 p-4 bg-white text-gray-800 rounded-md shadow-md max-h-80 overflow-y-auto">
@@ -95,7 +95,7 @@ export default function SearchTicket() {
         <div className="mt-4">
           <button
             onClick={() => router.back()}
-            className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
+            className="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-[#333]"
           >
             Go Back
           </button>
