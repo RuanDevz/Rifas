@@ -162,10 +162,10 @@ export default function FormPage() {
             type="submit"
             className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition-colors duration-300"
           >
-            Comprar Rifa
+            Buy Ticket
           </button>
           <Link href="/consultticket">
-            <p className="text-blue-500 underline">Consultar Ticket</p>
+            <p className="text-blue-500 underline">Consult Ticket</p>
           </Link>
         </form>
       </div>
