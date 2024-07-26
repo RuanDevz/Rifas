@@ -4,7 +4,7 @@ import { FaDiscord, FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
 
 export default function Home() {
   return (
-    <div className="p-6 font-sans bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+    <div className="p-6 font-sans bg-[#333] min-h-screen flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
         <h1 className="text-3xl font-bold mb-4 text-center">
           VIP METHOD TICKET
