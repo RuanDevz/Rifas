@@ -1,59 +1,46 @@
 'use client';
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import axios from "axios";
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function ConfirmationPayment() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [tickets, setTickets] = useState<{ ticket: number }[]>([]);
-  const [ticketsGenerate, setTicketsGenerate] = useState<string | null>(null);
+  const [tickets, setTickets] = useState<{ ticket: number; name: string; email: string }[]>([]);
 
   useEffect(() => {
     const reduceTickets = async () => {
-      const ticketString = localStorage.getItem("UserTicket");
-      const userEmail = localStorage.getItem("UserEmail");
-      const userName = localStorage.getItem("UserName");
-      if (ticketString && userEmail && userName) {
-        setTicketsGenerate(ticketString);
-        const ticketData = JSON.parse(ticketString);
+      try {
+        const userEmail = localStorage.getItem('UserEmail');
+        const userName = localStorage.getItem('UserName');
+        const quantityItem = localStorage.getItem('QuantityItem');
+        const quantity = quantityItem ? parseInt(quantityItem, 10) : 0;
 
-        try {
-          if (Array.isArray(ticketData) && ticketData.length > 0) {
-
-            const totalQuantity = ticketData.length;
-
-            const response = await axios.post(
-              `${process.env.NEXT_PUBLIC_API}/reduce-ticket`,
-              {
-                quantity: totalQuantity,
-                email: userEmail,
-                name: userName,
-                tickets: ticketData
+        if (userEmail && userName && quantity > 0) {
+          const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_API}/reduce-ticket`,
+            {
+              name: userName,
+              email: userEmail,
+              quantity: quantity,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
               },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-
-
-            setTickets(response.data.tickets);
-            console.log("Tickets reduced successfully");
-          } else {
-            setError("No tickets found.");
-          }
-        } catch (error) {
-          console.error("Error reducing tickets", error);
-          setError(
-            "There was a problem confirming your payment. Please try again later."
+            }
           );
-        } finally {
-          setLoading(false);
+
+          setTickets(response.data.tickets);
+          console.log('Tickets reduced successfully');
+        } else {
+          setError('Ticket or user information not found, or quantity is invalid.');
         }
-      } else {
-        setError("Ticket or user information not found.");
+      } catch (error) {
+        console.error('Error reducing tickets', error);
+        setError('There was a problem confirming your payment. Please try again later.');
+      } finally {
         setLoading(false);
       }
     };
@@ -70,7 +57,7 @@ export default function ConfirmationPayment() {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -88,7 +75,7 @@ export default function ConfirmationPayment() {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
@@ -99,13 +86,15 @@ export default function ConfirmationPayment() {
         {tickets.length > 0 && (
           <div className="text-center text-gray-600 mb-4">
             <h1 className="font-bold text-2xl">Your Tickets</h1>
-            {tickets.map((ticket, index) => (
-              <div key={index} className="mb-2">
-                <p>#{ticket.ticket}</p>
-              </div>
-            ))}
-            <p>
-              To check your tickets, enter your email{" "}
+            <div className="max-h-60 overflow-y-auto p-4 bg-gray-50 rounded-lg shadow-inner">
+              {tickets.map((ticket, index) => (
+                <div key={index} className="mb-2 border-b border-gray-300 pb-2">
+                  <p>#{ticket.ticket} - {ticket.name}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4">
+              To check your tickets, enter your email{' '}
               <Link className="text-blue-500 underline" href="/consultticket">
                 here
               </Link>
@@ -113,7 +102,7 @@ export default function ConfirmationPayment() {
             </p>
           </div>
         )}
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-4">
           <Link href="/">
             <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
               Back to Home

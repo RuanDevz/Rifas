@@ -6,6 +6,7 @@ import { RifasContext } from "@/context/RifasContext";
 import axios from "axios";
 import { Ticket } from "@/types/TicketGenerates";
 import Link from "next/link";
+import { json } from "stream/consumers";
 
 export default function FormPage() {
   const [timeLeft, setTimeLeft] = useState(120 * 24 * 3600);
@@ -22,7 +23,6 @@ export default function FormPage() {
           `${process.env.NEXT_PUBLIC_API}/tickets-restantes`
         );
         setRifasAvailable(response.data.ticketsDisponiveis);
-        console.log("Tickets disponíveis:", response.data.ticketsDisponiveis);
       } catch (error) {
         console.error("Error fetching tickets", error);
       }
@@ -61,6 +61,7 @@ export default function FormPage() {
 
         localStorage.setItem("UserEmail", email);
         localStorage.setItem("UserName", name);
+        localStorage.setItem("QuantityItem", JSON.stringify(quantity))
 
         const responsedata = response.data;
         console.log("Resposta da API:", responsedata);
