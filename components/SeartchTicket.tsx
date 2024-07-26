@@ -12,7 +12,7 @@ export default function SearchTicket() {
 
   const handleSearch = async () => {
     if (!ticketNumber && !email) {
-      alert("Por favor, insira o número do ticket ou o email.");
+      alert("Please enter your ticket number or email.");
       return;
     }
 
@@ -28,7 +28,7 @@ export default function SearchTicket() {
       setError(null);
     } catch (error) {
       console.error("Error fetching ticket info", error);
-      setError("Não foi possível encontrar o ticket. Verifique os dados e tente novamente.");
+      setError("Unable to find ticket. Please check your details and try again.");
       setTicketInfo(null);
     }
   };
@@ -36,24 +36,24 @@ export default function SearchTicket() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-4 text-center">Sistema de Tickets</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Ticket System</h1>
         <div className="mb-4">
           <label className="font-bold" htmlFor="Ticket">Consultar Ticket Único</label>
           <input
             type="text"
             id="Ticket"
-            placeholder="Digite o número do ticket"
+            placeholder="Enter ticket number"
             value={ticketNumber}
             onChange={(e) => setTicketNumber(e.target.value)}
             className="px-4 py-2 border rounded-md text-gray-800 w-full"
           />
         </div>
         <div className="mb-4">
-          <label className="font-bold" htmlFor="email">Consultar todos tickets</label>
+          <label className="font-bold" htmlFor="email">View all tickets</label>
           <input
             type="email"
             id="email"
-            placeholder="Digite o email"
+            placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="px-4 py-2 border rounded-md text-gray-800 w-full"
@@ -67,23 +67,22 @@ export default function SearchTicket() {
         </button>
         {ticketInfo && (
           <div className="mt-4 p-4 bg-white text-gray-800 rounded-md shadow-md max-h-80 overflow-y-auto">
-            <h2 className="text-xl font-semibold mb-2">Informações dos Tickets</h2>
+            <h2 className="text-xl font-semibold mb-2">Ticket Information</h2>
             {Array.isArray(ticketInfo) ? (
               ticketInfo.length > 0 ? (
                 ticketInfo.map((ticket, index) => (
                   <div key={index} className="mb-4">
-                    <p><strong>Número do Ticket:</strong> #{ticket.ticket}</p>
+                    <p><strong>Ticket Number:</strong> #{ticket.ticket}</p>
                   </div>
                 ))
               ) : (
-                <p>Nenhum ticket encontrado para este email.</p>
+                <p>No tickets found for this email.</p>
               )
             ) : (
               <div>
-                <p><strong>Nome:</strong> {ticketInfo.name}</p>
+                <p><strong>Name:</strong> {ticketInfo.name}</p>
                 <p><strong>Email:</strong> {ticketInfo.email}</p>
-                <p><strong>Número do Ticket:</strong> #{ticketInfo.ticket}</p>
-                <p><strong>Quantidade:</strong> {ticketInfo.quantity}</p>
+                <p><strong>Ticket Number:</strong> #{ticketInfo.ticket}</p>
               </div>
             )}
           </div>
@@ -98,7 +97,7 @@ export default function SearchTicket() {
             onClick={() => router.back()}
             className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
           >
-            Voltar
+            Go Back
           </button>
         </div>
       </div>
