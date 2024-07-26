@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,27 +6,30 @@ import axios from "axios";
 export default function ConfirmationPayment() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [tickets, setTickets] = useState<any[]>([]);
+  const [tickets, setTickets] = useState<{ ticket: number }[]>([]);
   const [ticketsGenerate, setTicketsGenerate] = useState<string | null>(null);
 
   useEffect(() => {
     const reduceTickets = async () => {
       const ticketString = localStorage.getItem("UserTicket");
-
-      if (ticketString) {
+      const userEmail = localStorage.getItem("UserEmail");
+      const userName = localStorage.getItem("UserName");
+      if (ticketString && userEmail && userName) {
         setTicketsGenerate(ticketString);
-
         const ticketData = JSON.parse(ticketString);
 
         try {
           if (Array.isArray(ticketData) && ticketData.length > 0) {
-            // Calcular a quantidade total
-            const quantities = ticketData.map((ticket: any) => ticket.quantity);
 
-            await axios.post(
+            const totalQuantity = ticketData.length;
+
+            const response = await axios.post(
               `${process.env.NEXT_PUBLIC_API}/reduce-ticket`,
               {
-                quantity: quantities.reduce((acc, quantity) => acc + quantity, 0),
+                quantity: totalQuantity,
+                email: userEmail,
+                name: userName,
+                tickets: ticketData
               },
               {
                 headers: {
@@ -35,21 +38,22 @@ export default function ConfirmationPayment() {
               }
             );
 
+
+            setTickets(response.data.tickets);
             console.log("Tickets reduced successfully");
-            setTickets(ticketData);
           } else {
-            setError("Nenhum ticket encontrado.");
+            setError("No tickets found.");
           }
         } catch (error) {
           console.error("Error reducing tickets", error);
           setError(
-            "Houve um problema ao confirmar seu pagamento. Tente novamente mais tarde."
+            "There was a problem confirming your payment. Please try again later."
           );
         } finally {
           setLoading(false);
         }
       } else {
-        setError("Ticket não encontrado.");
+        setError("Ticket or user information not found.");
         setLoading(false);
       }
     };
@@ -92,12 +96,12 @@ export default function ConfirmationPayment() {
         <p className="text-gray-600 mb-4">
           Your payment has been confirmed successfully. All tickets have been sent to your email.
         </p>
-        {ticketsGenerate && (
+        {tickets.length > 0 && (
           <div className="text-center text-gray-600 mb-4">
             <h1 className="font-bold text-2xl">Your Tickets</h1>
             {tickets.map((ticket, index) => (
               <div key={index} className="mb-2">
-                <p>#{ticket}</p>
+                <p>#{ticket.ticket}</p>
               </div>
             ))}
             <p>
@@ -118,5 +122,5 @@ export default function ConfirmationPayment() {
         </div>
       </div>
     </div>
-  )
-}  
+  );
+}

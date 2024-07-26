@@ -59,6 +59,9 @@ export default function FormPage() {
           { name, email, quantity }
         );
 
+        localStorage.setItem("UserEmail", email);
+        localStorage.setItem("UserName", name);
+
         const responsedata = response.data;
         console.log("Resposta da API:", responsedata);
 
