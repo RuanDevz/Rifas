@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
-import rifasImage from "../../public/rifas.jpg";
 import Link from "next/link";
 import axios from 'axios'
 
@@ -48,14 +47,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <Image
-        src={rifasImage}
-        alt="Rifas Background"
-        layout="fill"
-        objectFit="cover"
-        className="absolute z-0"
-      />
+    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-[#333]">
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
       <h1 className="text-3xl text-white font-bold pb-10 relative z-10">
         Buy your ticket now!

@@ -1,12 +1,9 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
-import rifasImage from "../../public/rifas.jpg";
-import Image from "next/image";
 import { RifasContext } from "@/context/RifasContext";
 import axios from "axios";
 import { Ticket } from "@/types/TicketGenerates";
 import Link from "next/link";
-import { json } from "stream/consumers";
 
 export default function FormPage() {
   const [timeLeft, setTimeLeft] = useState(120 * 24 * 3600);
@@ -107,14 +104,7 @@ export default function FormPage() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <Image
-        src={rifasImage}
-        alt="Rifas Background"
-        layout="fill"
-        objectFit="cover"
-        className="absolute z-0"
-      />
+    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-[#333]">
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
       <div className="bg-white bg-opacity-70 p-10 rounded-lg shadow-lg text-center relative z-10 max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
