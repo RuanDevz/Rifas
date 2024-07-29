@@ -28,14 +28,6 @@ export default function FormPage() {
     fetchTickets();
   }, []);
   
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
   
   useEffect(() => {
     axios.get(`${process.env.NEXT_PUBLIC_API}/time-left`).then((response) => {
