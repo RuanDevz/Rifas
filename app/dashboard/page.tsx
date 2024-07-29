@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
@@ -19,16 +19,12 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const savedTimeLeft = parseInt(localStorage.getItem("timeLeft") || "0", 10);
-    const initialTimeLeft = savedTimeLeft > 0 ? savedTimeLeft : 120 * 24 * 3600;
-    setTimeLeft(initialTimeLeft);
+    axios.get(`${process.env.NEXT_PUBLIC_API}/time-left`).then((response) => {
+      setTimeLeft(response.data.timeLeft);
+    });
 
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        const newTime = prevTime > 0 ? prevTime - 1 : 0;
-        localStorage.setItem("timeLeft", newTime.toString());
-        return newTime;
-      });
+      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
 
     return () => clearInterval(timer);
